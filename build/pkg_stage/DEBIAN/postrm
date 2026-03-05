@@ -1,7 +1,0 @@
-#!/bin/sh
-if [ "$1" = "remove" ]; then
-    rmdir /opt/orocos/include/gps_msg 2>/dev/null || true
-    rmdir /opt/orocos/share//cmake 2>/dev/null || true
-    rmdir /opt/orocos/share/ 2>/dev/null || true
-fi
-exit 0
