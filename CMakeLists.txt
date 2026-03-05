@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.10)
 project(gps_msg-msg VERSION 1.0.0)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 # Default installation directory to /opt/orocos if not explicitly set
 if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
     set(CMAKE_INSTALL_PREFIX "/opt/orocos" CACHE PATH "Installation prefix" FORCE)

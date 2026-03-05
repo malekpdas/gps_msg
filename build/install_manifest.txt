@@ -1,0 +1,2 @@
+/opt/orocos/include/gps_msg/gps_msg.hpp
+/opt/orocos/share/gps_msg-msg/cmake/gps_msg-msg-targets.cmake

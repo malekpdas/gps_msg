@@ -1,0 +1,7 @@
+Package: gps_msg-msg
+Version: 1.0.0-dirty
+Section: devel
+Priority: optional
+Architecture: all
+Maintainer: pdas@cm5
+Description: Header-only message definition: gps_msg

@@ -1,0 +1,4 @@
+#!/bin/sh
+mkdir -p /opt/orocos/include/gps_msg
+mkdir -p /opt/orocos/share//cmake
+exit 0
