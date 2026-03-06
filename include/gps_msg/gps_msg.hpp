@@ -2,7 +2,7 @@
 #define GPS_MSG_HPP
 
 #include <cstdint>
-#include <custom_types/custom_types.hpp>
+#include <custom_types/gps_data.hpp>
 
 /**
  * @brief GpsMsg message structure.
