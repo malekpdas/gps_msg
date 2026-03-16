@@ -3,26 +3,25 @@
 # Exit on any error
 set -e
 
+# Parse flags
+ALLOW_DOWNGRADES=""
+for arg in "$@"; do
+    case "$arg" in
+        --allow-downgrades) ALLOW_DOWNGRADES="--allow-downgrades" ;;
+    esac
+done
+
 MSG_NAME="gps_msg"
 
 # 1. Detect version from CMakeLists.txt and combine with Git info
 CMAKE_VERSION=$(grep "project(.*VERSION" CMakeLists.txt | sed -E 's/.*VERSION ([0-9.]+).*/\1/')
 CMAKE_TAG="v${CMAKE_VERSION}"
 
-# 2. Check if a tag for this version already exists
+# 2. Check if a tag for this version already exists, auto-create if missing
 if ! git rev-parse "${CMAKE_TAG}" >/dev/null 2>&1; then
     echo "⚠️  New version detected in CMakeLists.txt: ${CMAKE_VERSION}"
-    printf "❓ Should I create a Git tag '${CMAKE_TAG}' for this commit? (y/N): "
-    read tag_response
-    case "$tag_response" in
-        [yY][eE][sS]|[yY])
-            git tag "${CMAKE_TAG}"
-            echo "✅ Tag Created: ${CMAKE_TAG}"
-            ;;
-        *)
-            echo "ℹ️  Proceeding without tagging. Patch version will be relative to the previous tag."
-            ;;
-    esac
+    git tag "${CMAKE_TAG}"
+    echo "✅ Tag Created: ${CMAKE_TAG}"
 fi
 
 # 3. Get the latest tag (for calculating the patch version)
@@ -115,19 +114,10 @@ chmod 644 "${DEB_PACKAGE}"
 
 echo "✅ Package created: ${DEB_PACKAGE}"
 
-# 6. Optional Installation
+# 6. Auto-install
 echo ""
-printf "❓ Do you want to install the package using apt? (y/N): "
-read response
-case "$response" in
-    [yY][eE][sS]|[yY])
-        echo "📥 Installing ${DEB_PACKAGE}..."
-        cp "${DEB_PACKAGE}" "/tmp/${DEB_PACKAGE}"
-        sudo apt install "/tmp/${DEB_PACKAGE}" --reinstall -y
-        rm "/tmp/${DEB_PACKAGE}"
-        echo "🎉 Installation complete!"
-        ;;
-    *)
-        echo "ℹ️  Skipping installation."
-        ;;
-esac
+echo "📥 Installing ${DEB_PACKAGE}..."
+cp "${DEB_PACKAGE}" "/tmp/${DEB_PACKAGE}"
+sudo apt install "/tmp/${DEB_PACKAGE}" --reinstall ${ALLOW_DOWNGRADES} -y
+rm "/tmp/${DEB_PACKAGE}"
+echo "🎉 Installation complete!"
