@@ -10,7 +10,7 @@ for arg in "$@"; do
 done
 
 # Source shared utils
-source ../../pkg_utils.sh
+source /opt/orocos/bin/pkg_utils.sh
 
 PKG_NAME="uav-msg-gps"
 VERSION=$(get_version)
